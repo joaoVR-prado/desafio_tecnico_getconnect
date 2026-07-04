@@ -8,3 +8,8 @@ class BlankMessageException extends ChatExceptions{
   BlankMessageException(super.message);
 
 }
+
+class ServerChatException extends ChatExceptions{
+  ServerChatException(super.message);
+
+}

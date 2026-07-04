@@ -1,10 +1,10 @@
 import 'package:desafio_tecnico_getconnect/core/errors/chat_exceptions.dart';
 import 'package:desafio_tecnico_getconnect/features/chat/domain/repositories/chat_repository_interface.dart';
 
-class SendMessagesUsecase {
+class SendMessagesUseCase {
   final ChatRepositoryInterface repository;
 
-  SendMessagesUsecase(this.repository);
+  SendMessagesUseCase(this.repository);
 
   Future<void> call(String senderId, String senderName, String text) async{
     if(text.trim().isEmpty){
@@ -15,6 +15,5 @@ class SendMessagesUsecase {
     await repository.sendMessage(senderId, senderName, text.trim());
 
   }
-
 
 }

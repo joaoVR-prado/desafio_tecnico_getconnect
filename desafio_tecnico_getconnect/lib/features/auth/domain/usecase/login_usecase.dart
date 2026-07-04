@@ -8,11 +8,13 @@ class LoginUsecase {
   LoginUsecase(this.repository);
 
   Future<UserEntity> call(String email, String password) async{
+    if (email.trim().isEmpty || password.trim().isEmpty) {
+      throw InvalidCredentialsException('Preencha o e-mail e a senha.');
+      
+    }
     if(!email.contains('@')){
       throw InvalidEmailExcption('E-mail com formato inválido');
-    }
-    if(password.length < 8){
-      throw InvalidPasswordException('A senha deve conter pelo menos 8 caracteres');
+
     }
 
     return await repository.login(email, password);

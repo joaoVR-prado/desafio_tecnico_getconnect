@@ -13,7 +13,7 @@ class LoginUsecase {
       
     }
     if(!email.contains('@')){
-      throw InvalidEmailExcption('E-mail com formato inválido');
+      throw InvalidEmailException('E-mail com formato inválido');
 
     }
 

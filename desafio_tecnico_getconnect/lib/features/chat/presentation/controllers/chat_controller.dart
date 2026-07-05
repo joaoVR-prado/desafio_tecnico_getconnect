@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:desafio_tecnico_getconnect/core/errors/chat_exceptions.dart';
 import 'package:desafio_tecnico_getconnect/features/auth/presentation/controllers/auth_controller.dart';
 import 'package:desafio_tecnico_getconnect/features/chat/domain/entities/message_entity.dart';
@@ -26,10 +27,22 @@ class ChatController extends GetxController {
   final messageText = ''.obs;
   final textController = TextEditingController();
 
+  StreamSubscription<List<MessageEntity>>? _messagesSubscription;
+
   @override
   void onInit() {
     super.onInit();
     messages.bindStream(getMessagesUseCase());
+
+    _messagesSubscription = getMessagesUseCase().listen(
+    (newMessages) {
+      messages.assignAll(newMessages);
+    },
+    onError: (_) {
+      Get.snackbar('Atenção', 'Não foi possível carregar as mensagens.',
+      );
+    },
+  );
     
   }
 
@@ -66,6 +79,7 @@ class ChatController extends GetxController {
 
   @override
   void onClose() {
+    _messagesSubscription?.cancel();
     textController.dispose();
     super.onClose();
 

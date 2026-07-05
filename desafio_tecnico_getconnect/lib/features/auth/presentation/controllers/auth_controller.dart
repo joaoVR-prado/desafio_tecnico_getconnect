@@ -36,7 +36,7 @@ class AuthController extends GetxController{
     ever(currentUser, (UserEntity? user) async{
       if (user != null && user.name.isNotEmpty) {
         await setupPresenceUsecase(user.id, user.name);
-        
+
       }
     });
   }

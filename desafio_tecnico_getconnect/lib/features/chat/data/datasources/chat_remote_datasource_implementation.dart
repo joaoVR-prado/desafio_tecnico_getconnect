@@ -19,6 +19,9 @@ class ChatRemoteDatasourceImplementation implements ChatRemoteDatasourceInterfac
           data['id'] = doc.id;
           return data;
         }).toList();
+      }).handleError((e){
+        throw ServerChatException('Erro ao carregar mensagens.');
+        
       });
   }
 

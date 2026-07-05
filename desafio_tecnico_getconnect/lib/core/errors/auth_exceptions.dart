@@ -10,8 +10,8 @@ class InvalidNameException extends AuthExceptions{
 
 }
 
-class InvalidEmailExcption extends AuthExceptions{
-  InvalidEmailExcption(super.message);
+class InvalidEmailException extends AuthExceptions{
+  InvalidEmailException(super.message);
 
 }
 

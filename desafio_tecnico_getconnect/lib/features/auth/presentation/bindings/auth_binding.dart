@@ -6,6 +6,7 @@ import 'package:desafio_tecnico_getconnect/features/auth/domain/repositories/aut
 import 'package:desafio_tecnico_getconnect/features/auth/domain/usecase/login_usecase.dart';
 import 'package:desafio_tecnico_getconnect/features/auth/domain/usecase/logout_usecase.dart';
 import 'package:desafio_tecnico_getconnect/features/auth/domain/usecase/register_usecase.dart';
+import 'package:desafio_tecnico_getconnect/features/auth/domain/usecase/update_online_status_usecase.dart';
 import 'package:desafio_tecnico_getconnect/features/auth/presentation/controllers/auth_controller.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
@@ -23,6 +24,8 @@ class AuthBinding extends Bindings {
     Get.lazyPut(() => LoginUsecase(Get.find()));
     Get.lazyPut(() => RegisterUsecase(Get.find()));
     Get.lazyPut(() => LogoutUsecase(Get.find()));
+
+    Get.lazyPut(() => UpdateOnlineStatusUsecase(Get.find()));
 
     Get.put(AuthController(
       loginUseCase: Get.find(),

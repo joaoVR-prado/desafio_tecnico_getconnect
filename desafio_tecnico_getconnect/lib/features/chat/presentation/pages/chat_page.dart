@@ -1,3 +1,4 @@
+import 'package:desafio_tecnico_getconnect/features/chat/presentation/widgets/online_users_drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../controllers/chat_controller.dart';
@@ -9,8 +10,9 @@ class ChatPage extends GetView<ChatController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: const OnlineUsersDrawer(),
       appBar: AppBar(
-        title: const Text('Meu Chat'),
+        title: const Text('GetChat'),
         actions: [
           IconButton(
             icon: const Icon(Icons.exit_to_app),
@@ -26,9 +28,11 @@ class ChatPage extends GetView<ChatController> {
           Expanded(
             child: Obx(() {
               if (controller.messages.isEmpty) {
-                return const Center(child: Text(
-                  'Nenhuma mensagem ainda. Envie uma agora!'
-                ));
+                return const Center(
+                  child: Text(
+                    'Nenhuma mensagem ainda. Envie uma agora!'
+                  )
+                );
               }
               return ListView.builder(
                 itemCount: controller.messages.length,
@@ -62,10 +66,16 @@ class ChatPage extends GetView<ChatController> {
                           Stack(
                             children: [
                               Padding(
-                                padding: const EdgeInsets.only(right: 48.0, bottom: 12.0),
+                                padding: const EdgeInsets.only(
+                                  right: 48.0, 
+                                  bottom: 12.0
+                                ),
                                 child: Text(
                                   message.text,
-                                  style: const TextStyle(fontSize: 15, color: Colors.black87),
+                                  style: const TextStyle(
+                                    fontSize: 15, 
+                                    color: Colors.black87
+                                  ),
                                 ),
                               ),
                               Positioned(
@@ -116,7 +126,9 @@ class ChatPage extends GetView<ChatController> {
                   style: ElevatedButton.styleFrom(
                     padding: const EdgeInsets.all(16),
                   ),
-                  child: const Icon(Icons.send),
+                  child: const Icon(
+                    Icons.send
+                  ),
                 )),
               ],
             ),

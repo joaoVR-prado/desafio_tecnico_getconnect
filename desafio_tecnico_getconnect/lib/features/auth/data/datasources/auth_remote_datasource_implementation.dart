@@ -21,7 +21,7 @@ class AuthRemoteDatasourceImplementation implements AuthRemoteDataSourceInterfac
       );
       return credential.user!;
     } on firebase.FirebaseAuthException catch (e){
-      if(e.code == 'user-not-found' || e.code == 'wrong-passwordd' || e.code == 'invalid-credential'){
+      if(e.code == 'user-not-found' || e.code == 'wrong-password' || e.code == 'invalid-credential'){
         throw InvalidCredentialsException('E-mail ou senha incorretos.');
       } else if(e.code == 'network-request-failed'){
         throw AuthNetworkException('Sem conexão com a internet.');

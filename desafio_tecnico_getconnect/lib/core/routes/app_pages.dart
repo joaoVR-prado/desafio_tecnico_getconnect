@@ -15,12 +15,14 @@ class AppPages {
     ),
     GetPage(
       name: AppRoutes.register, 
-      page: () => const RegisterPage()
+      page: () => const RegisterPage(),
+      middlewares: [AuthMiddleware()],
     ),
     GetPage(
       name: AppRoutes.chat,
       page: () => const ChatPage(),
       binding: ChatBinding(),
+      middlewares: [AuthMiddleware()],
     ),
 
   ];

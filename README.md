@@ -64,6 +64,41 @@ Como as chaves do Firebase nao estao versionadas no repositorio, e necessario co
   - Cloud Firestore ativado.
   - Realtime Database ativado.
 
+
+## Regras do Firebase
+
+Para executar o projeto localmente, configure regras básicas permitindo acesso apenas para usuários autenticados.
+
+> As regras abaixo são suficientes para o escopo do desafio técnico. Em produção, seria necessário restringir permissões por coleção, validar campos e limitar operações por usuário.
+
+### Realtime Database
+
+```json
+{
+  "rules": {
+    ".read": "auth != null",
+    ".write": "auth != null"
+  }
+}
+
+```
+
+### Cloud Firestore
+
+```json
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /{document=**} {
+      allow read, write: if request.auth != null;
+    }
+  }
+}
+
+```
+
+
 ### Passo a Passo
 
 1. Clone o repositorio e acesse a pasta do projeto Flutter:

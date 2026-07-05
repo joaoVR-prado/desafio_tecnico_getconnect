@@ -5,32 +5,57 @@ import 'package:desafio_tecnico_getconnect/features/auth/domain/repositories/aut
 import 'package:desafio_tecnico_getconnect/features/auth/domain/usecase/login_usecase.dart';
 import 'package:desafio_tecnico_getconnect/features/auth/domain/usecase/logout_usecase.dart';
 import 'package:desafio_tecnico_getconnect/features/auth/domain/usecase/register_usecase.dart';
+import 'package:desafio_tecnico_getconnect/features/auth/domain/usecase/update_online_status_usecase.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:get/state_manager.dart';
 
-class AuthController extends GetxController {
+class AuthController extends GetxController with WidgetsBindingObserver {
   final LoginUsecase loginUseCase;
   final RegisterUsecase registerUseCase;
   final LogoutUsecase logoutUseCase;
   final AuthRepositoryInterface authRepository;
+  final UpdateOnlineStatusUsecase updateOnlineStatusUsecase;
 
   AuthController({
     required this.loginUseCase,
     required this.registerUseCase,
     required this.logoutUseCase,
-    required this.authRepository
+    required this.authRepository,
+    required this.updateOnlineStatusUsecase
 
   });
 
   final Rx<UserEntity?> currentUser = Rx<UserEntity?>(null);
-
   final isLoading = false.obs;
 
-  // Aqui utilizamos a Stream do Firestore para atualizar o usuario ativo automaticamente
   @override
   void onInit(){
     super.onInit();
+    WidgetsBinding.instance.addObserver(this);
     currentUser.bindStream(authRepository.authStateChanges);
+
+  }
+
+  @override
+  void onClose(){
+    WidgetsBinding.instance.removeObserver(this);
+    super.onClose();
+
+  }
+
+  @override
+  void didChangeAppLifeCycle(AppLifecycleState state){
+    final user = currentUser.value;
+    if(user == null) return;
+
+    if(state == AppLifecycleState.resumed){
+      updateOnlineStatusUsecase(user.id, true);
+
+    } else if(state == AppLifecycleState.paused || state == AppLifecycleState.detached){
+      updateOnlineStatusUsecase(user.id, false);
+
+    }
 
   }
 

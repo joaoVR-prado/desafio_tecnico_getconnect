@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:desafio_tecnico_getconnect/features/auth/data/datasources/auth_remote_datasource.dart';
 import 'package:desafio_tecnico_getconnect/features/auth/data/datasources/auth_remote_datasource_implementation.dart';
 import 'package:desafio_tecnico_getconnect/features/auth/domain/repositories/auth_repository_implementation.dart';
@@ -13,8 +14,9 @@ class AuthBinding extends Bindings {
   @override
   void dependencies(){
     Get.lazyPut(() => FirebaseAuth.instance);
+    Get.lazyPut(() => FirebaseFirestore.instance);
 
-    Get.lazyPut<AuthRemoteDataSourceInterface>(() => AuthRemoteDatasourceImplementation(Get.find()));
+    Get.lazyPut<AuthRemoteDataSourceInterface>(() => AuthRemoteDatasourceImplementation(Get.find(), Get.find()));
 
     Get.lazyPut<AuthRepositoryInterface>(() => AuthRepositoryImplementation(Get.find()));
 
@@ -26,7 +28,8 @@ class AuthBinding extends Bindings {
       loginUseCase: Get.find(),
       registerUseCase: Get.find(),
       logoutUseCase: Get.find(),
-      authRepository: Get.find()
+      authRepository: Get.find(),
+      updateOnlineStatusUsecase: Get.find()
 
     ), permanent: true);
 

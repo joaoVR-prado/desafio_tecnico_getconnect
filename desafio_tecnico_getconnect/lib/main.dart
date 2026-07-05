@@ -1,5 +1,6 @@
 import 'package:desafio_tecnico_getconnect/core/routes/app_pages.dart';
 import 'package:desafio_tecnico_getconnect/core/routes/app_routes.dart';
+import 'package:desafio_tecnico_getconnect/features/auth/presentation/bindings/auth_binding.dart';
 import 'package:desafio_tecnico_getconnect/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -23,6 +24,7 @@ class MainApp extends StatelessWidget {
     return GetMaterialApp(
       title: 'GetChat',
       debugShowCheckedModeBanner: false,
+      initialBinding: AuthBinding(),
       initialRoute: AppRoutes.login,
       getPages: AppPages.pages,
 

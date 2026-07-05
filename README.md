@@ -77,7 +77,13 @@ flutter pub get
 2. Ative o FlutterFire CLI, caso ainda nao tenha feito:
 
 ```bash
-dart pub global activate flutterfire_cli
+dart pub global activate flutterfire_cli  
+```
+
+2.1 Caso o comando acima falhe, use o comando abaixo e selecione o projeto que criou no Firebase:
+
+```bash
+dart pub global run flutterfire_cli:flutterfire configure
 ```
 
 3. Gere os arquivos de configuracao do Firebase:

@@ -6,11 +6,10 @@ import 'package:desafio_tecnico_getconnect/features/auth/domain/usecase/login_us
 import 'package:desafio_tecnico_getconnect/features/auth/domain/usecase/logout_usecase.dart';
 import 'package:desafio_tecnico_getconnect/features/auth/domain/usecase/register_usecase.dart';
 import 'package:desafio_tecnico_getconnect/features/auth/domain/usecase/setup_presence_usecase.dart';
-import 'package:flutter/material.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:get/state_manager.dart';
 
-class AuthController extends GetxController with WidgetsBindingObserver {
+class AuthController extends GetxController{
   final LoginUsecase loginUseCase;
   final RegisterUsecase registerUseCase;
   final LogoutUsecase logoutUseCase;
@@ -34,7 +33,6 @@ class AuthController extends GetxController with WidgetsBindingObserver {
   @override
   void onInit(){
     super.onInit();
-    WidgetsBinding.instance.addObserver(this);
     currentUser.bindStream(authRepository.authStateChanges);
     ever(currentUser, (UserEntity? user) {
       if (user != null && user.name.isNotEmpty) {

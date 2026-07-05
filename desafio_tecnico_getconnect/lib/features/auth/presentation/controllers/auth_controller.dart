@@ -9,7 +9,7 @@ import 'package:desafio_tecnico_getconnect/features/auth/domain/usecase/setup_pr
 import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:get/state_manager.dart';
 
-class AuthController extends GetxController {
+class AuthController extends GetxController{
   final LoginUsecase loginUseCase;
   final RegisterUsecase registerUseCase;
   final LogoutUsecase logoutUseCase;
@@ -21,7 +21,7 @@ class AuthController extends GetxController {
     required this.registerUseCase,
     required this.logoutUseCase,
     required this.authRepository,
-    required this.setupPresenceUsecase,
+    required this.setupPresenceUsecase
   });
 
   final Rx<UserEntity?> currentUser = Rx<UserEntity?>(null);
@@ -33,9 +33,10 @@ class AuthController extends GetxController {
   void onInit() {
     super.onInit();
     currentUser.bindStream(authRepository.authStateChanges);
-    ever(currentUser, (UserEntity? user) async {
+    ever(currentUser, (UserEntity? user) async{
       if (user != null && user.name.isNotEmpty) {
         await setupPresenceUsecase(user.id, user.name);
+        
       }
     });
   }
@@ -45,6 +46,7 @@ class AuthController extends GetxController {
       isLoading.value = true;
       await loginUseCase(email, password);
       Get.offAllNamed(AppRoutes.chat);
+
     } on AuthExceptions catch (e) {
       Get.snackbar('Atenção', e.message);
     } finally {

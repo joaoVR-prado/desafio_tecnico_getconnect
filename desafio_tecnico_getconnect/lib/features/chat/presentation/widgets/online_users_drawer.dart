@@ -24,9 +24,9 @@ class OnlineUsersDrawer extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   Icon(
-                    Icons.people_outline,
-                    color: Colors.white,
-                    size: 40,
+                    Icons.people_outline, 
+                    color: Colors.white, 
+                    size: 40
                   ),
                   SizedBox(height: 12),
                   Text(
@@ -34,25 +34,31 @@ class OnlineUsersDrawer extends StatelessWidget {
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 20,
-                      fontWeight: FontWeight.bold
+                      fontWeight: FontWeight.bold,
                     ),
-                  )
+                  ),
                 ],
               ),
-            )
+            ),
           ),
           Expanded(
-            child: Obx((){
-              if(controller.onlineUsers.isEmpty){
-                return const Center(child: Text('Ninguém online no momento. :('));
+            child: Obx(() {
+              final users = controller.onlineUsers
+                .where((user) => user.uid != controller.currentUserId)
+                .toList();
 
+              if (users.isEmpty) {
+                return const Center(
+                  child: Text(
+                    'Ninguém online no momento. :('
+                  ),
+                );
               }
               return ListView.builder(
                 padding: EdgeInsets.zero,
-                itemCount: controller.onlineUsers.length,
-                itemBuilder: (context, index){
-                  final user = controller.onlineUsers[index];
-                  if(user.uid == controller.currentUserId) return const SizedBox.shrink();
+                itemCount: users.length,
+                itemBuilder: (context, index) {
+                  final user = users[index];
 
                   return ListTile(
                     leading: Stack(
@@ -75,10 +81,7 @@ class OnlineUsersDrawer extends StatelessWidget {
                             decoration: BoxDecoration(
                               color: Colors.green,
                               shape: BoxShape.circle,
-                              border: Border.all(
-                                color: Colors.white, 
-                                width: 2
-                              ),
+                              border: Border.all(color: Colors.white, width: 2),
                             ),
                           ),
                         ),
@@ -86,18 +89,14 @@ class OnlineUsersDrawer extends StatelessWidget {
                     ),
                     title: Text(user.name),
                     subtitle: const Text(
-                      'Online', 
-                      style: TextStyle(
-                        fontSize: 12, 
-                        color: Colors.green
-                      )
+                      'Online',
+                      style: TextStyle(fontSize: 12, color: Colors.green),
                     ),
-                  );  
-                }
+                  );
+                },
               );
-              }
-            )
-          )
+            }),
+          ),
         ],
       ),
     );

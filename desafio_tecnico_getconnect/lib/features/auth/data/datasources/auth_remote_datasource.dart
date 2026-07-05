@@ -5,6 +5,6 @@ abstract class AuthRemoteDataSourceInterface {
   Future<firebase.User> register(String name, String email, String password);
   Future<void> logout();
   Stream<firebase.User?> get authStateChanges;
-  Future<void> updateOnlineStatus(String uid, bool isOnline);
+  void setupPresenceSystem(String uid, String name);
 
 }

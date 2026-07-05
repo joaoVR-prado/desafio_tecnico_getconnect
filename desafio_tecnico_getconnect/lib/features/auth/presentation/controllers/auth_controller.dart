@@ -5,7 +5,7 @@ import 'package:desafio_tecnico_getconnect/features/auth/domain/repositories/aut
 import 'package:desafio_tecnico_getconnect/features/auth/domain/usecase/login_usecase.dart';
 import 'package:desafio_tecnico_getconnect/features/auth/domain/usecase/logout_usecase.dart';
 import 'package:desafio_tecnico_getconnect/features/auth/domain/usecase/register_usecase.dart';
-import 'package:desafio_tecnico_getconnect/features/auth/domain/usecase/update_online_status_usecase.dart';
+import 'package:desafio_tecnico_getconnect/features/auth/domain/usecase/setup_presence_usecase.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:get/state_manager.dart';
@@ -15,14 +15,14 @@ class AuthController extends GetxController with WidgetsBindingObserver {
   final RegisterUsecase registerUseCase;
   final LogoutUsecase logoutUseCase;
   final AuthRepositoryInterface authRepository;
-  final UpdateOnlineStatusUsecase updateOnlineStatusUsecase;
+  final SetupPresenceUsecase setupPresenceUsecase;
 
   AuthController({
     required this.loginUseCase,
     required this.registerUseCase,
     required this.logoutUseCase,
     required this.authRepository,
-    required this.updateOnlineStatusUsecase
+    required this.setupPresenceUsecase
 
   });
 
@@ -34,6 +34,11 @@ class AuthController extends GetxController with WidgetsBindingObserver {
     super.onInit();
     WidgetsBinding.instance.addObserver(this);
     currentUser.bindStream(authRepository.authStateChanges);
+    ever(currentUser, (UserEntity? user) {
+      if (user != null && user.name.isNotEmpty) {
+        authRepository.setupPresence(user.id, user.name);
+      }
+    });
 
   }
 
@@ -41,21 +46,6 @@ class AuthController extends GetxController with WidgetsBindingObserver {
   void onClose(){
     WidgetsBinding.instance.removeObserver(this);
     super.onClose();
-
-  }
-
-  @override
-  void didChangeAppLifeCycle(AppLifecycleState state){
-    final user = currentUser.value;
-    if(user == null) return;
-
-    if(state == AppLifecycleState.resumed){
-      updateOnlineStatusUsecase(user.id, true);
-
-    } else if(state == AppLifecycleState.paused || state == AppLifecycleState.detached){
-      updateOnlineStatusUsecase(user.id, false);
-
-    }
 
   }
 

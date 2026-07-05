@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:desafio_tecnico_getconnect/features/auth/presentation/controllers/auth_controller.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_instance/src/extension_instance.dart';
@@ -45,30 +46,37 @@ class OnlineUsersDrawer extends StatelessWidget {
             )
           ),
           Expanded(
-            child: StreamBuilder<QuerySnapshot>(
-              stream: FirebaseFirestore.instance
-                .collection('users')
-                .where('isOnline', isEqualTo: true)
-                .snapshots(), 
+            child: StreamBuilder<DatabaseEvent>(
+              stream: FirebaseDatabase.instance
+                .ref('status')
+                .orderByChild('state')
+                .equalTo('online')
+                .onValue,
               builder: (context, snapshot){
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const Center(child: CircularProgressIndicator());
 
                 }
 
-                if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+                if (!snapshot.hasData || snapshot.data!.snapshot.value == null) {
                   return const Center(child: Text('Ninguém online no momento. :('));
 
                 }
+                final Map<dynamic, dynamic> statusMap = snapshot.data!.snapshot.value as Map<dynamic, dynamic>;
+                final users = statusMap.entries
+                    .where((entry) => entry.key != currentUserId)
+                    .toList();
 
-                final users = snapshot.data!.docs;
-
+                if (users.isEmpty) {
+                  return const Center(child: Text('Ninguém online no momento. :('));
+                }
+                
                 return ListView.builder(
                   padding: EdgeInsets.zero,
                   itemCount: users.length,
                   itemBuilder: (context, index){
-                    final userData = users[index].data() as Map<String, dynamic>;
-                    final uid = userData['id'];
+                    final userData = users[index].value as Map<dynamic, dynamic>;
+                    final uid = users[index].key as String;
                     final name = userData['name'] ?? 'Desconhecido';
 
                     if(uid == currentUserId) return const SizedBox.shrink();

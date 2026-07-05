@@ -39,8 +39,8 @@ class AuthRepositoryImplementation implements AuthRepositoryInterface {
   }
 
   @override
-  Future<void> updateOnlineStatus(String uid, bool isOnline) async {
-    await remoteDataSource.updateOnlineStatus(uid, isOnline);
+  void setupPresence(String uid, String name) {
+    remoteDataSource.setupPresenceSystem(uid, name);
     
   }
 

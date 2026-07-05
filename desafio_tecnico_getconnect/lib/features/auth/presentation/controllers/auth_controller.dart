@@ -29,6 +29,8 @@ class AuthController extends GetxController with WidgetsBindingObserver {
   final Rx<UserEntity?> currentUser = Rx<UserEntity?>(null);
   final isLoading = false.obs;
 
+  String get currentUserId => currentUser.value?.id ?? '';
+
   @override
   void onInit(){
     super.onInit();
@@ -36,16 +38,10 @@ class AuthController extends GetxController with WidgetsBindingObserver {
     currentUser.bindStream(authRepository.authStateChanges);
     ever(currentUser, (UserEntity? user) {
       if (user != null && user.name.isNotEmpty) {
-        authRepository.setupPresence(user.id, user.name);
+        setupPresenceUsecase(user.id, user.name);
+
       }
     });
-
-  }
-
-  @override
-  void onClose(){
-    WidgetsBinding.instance.removeObserver(this);
-    super.onClose();
 
   }
 

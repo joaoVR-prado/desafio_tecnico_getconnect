@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:desafio_tecnico_getconnect/features/auth/data/datasources/auth_remote_datasource.dart';
 import 'package:desafio_tecnico_getconnect/features/auth/data/datasources/auth_remote_datasource_implementation.dart';
-import 'package:desafio_tecnico_getconnect/features/auth/domain/repositories/auth_repository_implementation.dart';
+import 'package:desafio_tecnico_getconnect/features/auth/data/repositories/auth_repository_implementation.dart';
 import 'package:desafio_tecnico_getconnect/features/auth/domain/repositories/auth_repository_interface.dart';
 import 'package:desafio_tecnico_getconnect/features/auth/domain/usecase/login_usecase.dart';
 import 'package:desafio_tecnico_getconnect/features/auth/domain/usecase/logout_usecase.dart';

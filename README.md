@@ -6,11 +6,10 @@ Desafio Tecnico - Desenvolvedor Flutter Pleno
 ![Flutter](https://img.shields.io/badge/Flutter-%2302569B.svg?style=flat&logo=Flutter&logoColor=white)
 ![Firebase](https://img.shields.io/badge/firebase-%23039BE5.svg?style=flat&logo=firebase)
 
-Aplicativo de chat global em tempo real desenvolvido em Flutter, utilizando Firebase Authentication, Cloud Firestore e Realtime Database. O foco do projeto e demonstrar organizacao de codigo, separacao de responsabilidades, uso de dados em tempo real e tratamento de erros dentro do escopo de um teste tecnico.
-
+Aplicativo de chat global em tempo real desenvolvido em Flutter, utilizando Firebase Authentication, Cloud Firestore e Realtime Database.
 ## Arquitetura e Tecnologias
 
-O projeto foi organizado por features e camadas, seguindo principios de Clean Architecture de forma pragmatica para o tamanho do desafio.
+O projeto foi organizado por features e camadas, seguindo principios de Clean Architecture.
 
 - **Flutter & Dart**
 - **GetX**: gerenciamento de estado com `GetxController`, injecao de dependencias com `Bindings` e roteamento com `GetMiddleware`.
@@ -107,4 +106,4 @@ flutter run
 
 ## Observacoes
 
-- O uso do Realtime Database foi restrito ao controle de presenca; as mensagens permanecem no Cloud Firestore conforme solicitado.
+- O uso do Realtime Database foi restrito ao controle de presenca, então as mensagens permanecem no Cloud Firestore.

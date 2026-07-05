@@ -1,6 +1,5 @@
 import 'package:desafio_tecnico_getconnect/core/routes/app_routes.dart';
 import 'package:desafio_tecnico_getconnect/core/routes/auth_middleware.dart';
-import 'package:desafio_tecnico_getconnect/features/auth/presentation/bindings/auth_binding.dart';
 import 'package:desafio_tecnico_getconnect/features/auth/presentation/pages/login_page.dart';
 import 'package:desafio_tecnico_getconnect/features/auth/presentation/pages/register_page.dart';
 import 'package:desafio_tecnico_getconnect/features/chat/presentation/bindings/chat_binding.dart';

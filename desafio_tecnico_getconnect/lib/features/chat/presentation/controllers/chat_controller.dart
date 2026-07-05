@@ -43,6 +43,9 @@ class ChatController extends GetxController {
       return;
     }
 
+    textController.clear();
+    messageText.value = '';
+
     try {
       await sendMessagesUseCase(
         currentUser.id,

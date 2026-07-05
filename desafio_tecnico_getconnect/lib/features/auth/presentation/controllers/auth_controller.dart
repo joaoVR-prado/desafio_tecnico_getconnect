@@ -9,7 +9,7 @@ import 'package:desafio_tecnico_getconnect/features/auth/domain/usecase/setup_pr
 import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:get/state_manager.dart';
 
-class AuthController extends GetxController{
+class AuthController extends GetxController {
   final LoginUsecase loginUseCase;
   final RegisterUsecase registerUseCase;
   final LogoutUsecase logoutUseCase;
@@ -21,8 +21,7 @@ class AuthController extends GetxController{
     required this.registerUseCase,
     required this.logoutUseCase,
     required this.authRepository,
-    required this.setupPresenceUsecase
-
+    required this.setupPresenceUsecase,
   });
 
   final Rx<UserEntity?> currentUser = Rx<UserEntity?>(null);
@@ -31,36 +30,30 @@ class AuthController extends GetxController{
   String get currentUserId => currentUser.value?.id ?? '';
 
   @override
-  void onInit(){
+  void onInit() {
     super.onInit();
     currentUser.bindStream(authRepository.authStateChanges);
-    ever(currentUser, (UserEntity? user) {
+    ever(currentUser, (UserEntity? user) async {
       if (user != null && user.name.isNotEmpty) {
-        setupPresenceUsecase(user.id, user.name);
-
+        await setupPresenceUsecase(user.id, user.name);
       }
     });
-
   }
 
-  Future<void> login(String email, String password) async{
-    try{
+  Future<void> login(String email, String password) async {
+    try {
       isLoading.value = true;
       await loginUseCase(email, password);
       Get.offAllNamed(AppRoutes.chat);
-
-    } on AuthExceptions catch (e){
+    } on AuthExceptions catch (e) {
       Get.snackbar('Atenção', e.message);
-
-    } finally{
+    } finally {
       isLoading.value = false;
-
     }
-
   }
 
-  Future<void> register(String name, String email, String password) async{
-    try{
+  Future<void> register(String name, String email, String password) async {
+    try {
       isLoading.value = true;
       await registerUseCase(name, email, password);
       if (currentUser.value != null) {
@@ -71,20 +64,14 @@ class AuthController extends GetxController{
         );
       }
       Get.offAllNamed(AppRoutes.chat);
-
-    } on AuthExceptions catch(e){
+    } on AuthExceptions catch (e) {
       Get.snackbar('Atenção', e.message);
-
-    } finally{
+    } finally {
       isLoading.value = false;
-
     }
-
   }
 
-  Future<void> logout() async{
+  Future<void> logout() async {
     await logoutUseCase();
-
   }
-
 }

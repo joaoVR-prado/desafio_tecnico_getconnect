@@ -5,6 +5,5 @@ abstract class AuthRepositoryInterface {
   Future<UserEntity> register(String name, String email, String password);
   Future<void> logout();
   Stream<UserEntity?> get authStateChanges;
-  void setupPresence(String uid, String name);
-
+  Future<void> setupPresence(String uid, String name);
 }

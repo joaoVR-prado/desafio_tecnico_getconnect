@@ -25,12 +25,6 @@ class AuthMiddleware extends GetMiddleware {
     }
 
     return null;
-    // final user = FirebaseAuth.instance.currentUser;
-    // if (user != null) {
-    //   return const RouteSettings(name: AppRoutes.chat);
-    // }
-    
-    // return null;
 
   }
 }

@@ -9,39 +9,37 @@ class AuthRepositoryImplementation implements AuthRepositoryInterface {
   AuthRepositoryImplementation(this.remoteDataSource);
 
   @override
-  Future<UserEntity> login(String email, String password) async{
+  Future<UserEntity> login(String email, String password) async {
     final firebaseUser = await remoteDataSource.login(email, password);
     return UserModel.fromFirebaseUser(firebaseUser);
 
   }
 
   @override
-  Future<UserEntity> register(String name, String email, String password) async{
+  Future<UserEntity> register(String name, String email, String password,
+  ) async {
     final firebaseUser = await remoteDataSource.register(name, email, password);
     return UserModel.fromFirebaseUser(firebaseUser, name: name);
 
   }
 
   @override
-  Future<void> logout() async{
+  Future<void> logout() async {
     await remoteDataSource.logout();
-
   }
 
   @override
-  Stream<UserEntity?> get authStateChanges{
-    return remoteDataSource.authStateChanges.map((firebaseUser){
-      if(firebaseUser == null) return null;
+  Stream<UserEntity?> get authStateChanges {
+    return remoteDataSource.authStateChanges.map((firebaseUser) {
+      if (firebaseUser == null) return null;
       return UserModel.fromFirebaseUser(firebaseUser);
 
     });
-
   }
 
   @override
-  void setupPresence(String uid, String name) {
-    remoteDataSource.setupPresenceSystem(uid, name);
-    
-  }
+  Future<void> setupPresence(String uid, String name) async {
+    await remoteDataSource.setupPresenceSystem(uid, name);
 
+  }
 }

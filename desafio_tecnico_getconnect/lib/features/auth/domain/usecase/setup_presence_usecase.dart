@@ -4,8 +4,7 @@ class SetupPresenceUsecase {
   final AuthRepositoryInterface repository;
 
   SetupPresenceUsecase(this.repository);
-  void call(String uid, String name) { 
-    repository.setupPresence(uid, name);
-
+  Future<void> call(String uid, String name) async {
+    await repository.setupPresence(uid, name);
   }
 }

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:desafio_tecnico_getconnect/core/errors/auth_exceptions.dart';
 import 'package:desafio_tecnico_getconnect/features/auth/data/datasources/auth_remote_datasource.dart';
@@ -8,6 +10,9 @@ class AuthRemoteDatasourceImplementation implements AuthRemoteDataSourceInterfac
   final firebase.FirebaseAuth firebaseAuth;
   final FirebaseFirestore firestore;
   final FirebaseDatabase realtimeDatabase;
+  StreamSubscription<DatabaseEvent>? _presenceSubscription;
+  String? _presenceUid;
+  String? _presenceName;
 
   AuthRemoteDatasourceImplementation(this.firebaseAuth, this.firestore, this.realtimeDatabase);
 
@@ -70,6 +75,7 @@ class AuthRemoteDatasourceImplementation implements AuthRemoteDataSourceInterfac
         "last_changed": ServerValue.timestamp,
       });
     }
+    await disposePresence();
     await firebaseAuth.signOut();
 
   }
@@ -78,10 +84,19 @@ class AuthRemoteDatasourceImplementation implements AuthRemoteDataSourceInterfac
   Stream<firebase.User?> get authStateChanges => firebaseAuth.authStateChanges();
 
   @override
-  void setupPresenceSystem(String uid, String name) {
+  Future<void> setupPresenceSystem(String uid, String name) async{
+    if (_presenceUid == uid && _presenceName == name && _presenceSubscription != null) {
+      return;
+      
+    }
+
+    await disposePresence();
+
+    _presenceUid = uid;
+    _presenceName = name;
     final DatabaseReference presenceRef = realtimeDatabase.ref("status/$uid");
 
-    realtimeDatabase.ref(".info/connected").onValue.listen((event) async {
+    _presenceSubscription = realtimeDatabase.ref(".info/connected").onValue.listen((event) async {
       final bool connected = event.snapshot.value as bool? ?? false;
 
       if (connected) {
@@ -98,6 +113,15 @@ class AuthRemoteDatasourceImplementation implements AuthRemoteDataSourceInterfac
         });
       }
     });
+  }
+  
+  @override
+  Future<void> disposePresence() async {
+    await _presenceSubscription?.cancel();
+    _presenceSubscription = null;
+    _presenceUid = null;
+    _presenceName = null;
+
   }
 
 }
